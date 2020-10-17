@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "Technofy",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
+    "dev": "concurrently --kill-others-on-fail \"npm run client\"  \"npm run server\""
+  },
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
