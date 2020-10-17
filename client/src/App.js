@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import theme from "./Theme";
 import GlobalStyles from "./GlobalStyles";
 import Spinner from './component/Common/Spinner/Spinner';
+import HomePage from './component/Home';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Suspense fallback={<Spinner />}>
           <Switch>
             <Route path="/">
-              Hello
+              <HomePage />
             </Route>
           </Switch>
         </Suspense>
