@@ -5,6 +5,7 @@ import theme from "./Theme";
 import GlobalStyles from "./GlobalStyles";
 import Spinner from './component/Common/Spinner/Spinner';
 import HomePage from './component/Home';
+import Playlist from './component/Playlist';
 
 function App() {
   return (
@@ -14,8 +15,11 @@ function App() {
         <GlobalStyles />
         <Suspense fallback={<Spinner />}>
           <Switch>
-            <Route path="/">
+            <Route exact path="/">
               <HomePage />
+            </Route>
+            <Route path="/playlist">
+              <Playlist />
             </Route>
           </Switch>
         </Suspense>
