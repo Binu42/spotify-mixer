@@ -33,6 +33,20 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '1rem'
     }
+  },
+  search: {
+    position: "relative",
+    '&::before': {
+      content: "'1'",
+      position: 'absolute',
+      fontWeight: 300,
+      fontSize: '10rem',
+      lineHeight: '234px',
+      color: 'rgba(255, 255, 255, 0.1)',
+      top: '-15%',
+      left: "10%",
+      zIndex: - 1,
+    }
   }
 }));
 
@@ -41,7 +55,7 @@ export default function Search() {
 
   return (
     <Box pt={10}>
-      <Grid direction="column" container justify="center" alignContent="center">
+      <Grid className={classes.search} direction="column" container justify="center" alignContent="center">
         <Grid item>
           <Box pb={1}>
             <Typography className={"text-white " + classes.searchHelper}>Discover new tracks based on playlists you like </Typography>
