@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SpotifyBtn = ({ label }) => {
+const SpotifyBtn = ({ label, handleOnClick }) => {
   const classes = useStyles();
   return (
-    <Button classes={{ root: classes.root }} variant="contained" color="primary" startIcon={<FaSpotify />}>
+    <Button classes={{ root: classes.root }} onClick={handleOnClick} variant="contained" color="primary" startIcon={<FaSpotify />}>
       {label}
     </Button>
   )
