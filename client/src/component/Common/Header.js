@@ -36,8 +36,6 @@ const Header = (props) => {
 
     props.setAccessToken && props.setAccessToken(null);
     props.setRefreshToken && props.setRefreshToken(null);
-
-    window.location = '/';
   };
 
   const login = () => {

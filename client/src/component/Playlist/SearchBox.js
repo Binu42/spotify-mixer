@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, IconButton, Box, Grid, Divider, Switch, Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, InputBase, IconButton, Box, Grid, Divider, Switch, Typography, Button, Hidden } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
 
 const useStyles = makeStyles((theme) => ({
@@ -37,9 +37,11 @@ export default function SearchBox() {
       <Grid className={classes.search} direction="column" container justify="center" alignContent="center">
         <Grid item xs={12} style={{ width: '100%' }}>
           <Paper component="form" className={classes.root}>
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-              <MdSearch className={classes.icon} />
-            </IconButton>
+            <Hidden mdDown>
+              <IconButton type="submit" className={classes.iconButton} aria-label="search">
+                <MdSearch className={classes.icon} />
+              </IconButton>
+            </Hidden>
             <InputBase
               className={classes.input}
               placeholder={`Search by ${isChecked ? 'Artist' : 'Track'}`}
