@@ -1,8 +1,9 @@
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react'
+import React from 'react'
 import Cookies from 'js-cookie';
-import SpotifyBtn from '../Common/Button/SpotifyBtn'
+import SpotifyBtn from './Button/SpotifyBtn'
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -46,7 +47,7 @@ const Header = (props) => {
   return (
     <div className={classes.header}>
       <Grid justify="space-between" alignContent="center" wrap='nowrap' container spacing={0}>
-        <Grid item>
+        <Grid item onClick={e => props.history.push("/")}>
           <Typography className={"text-white " + classes.BrandName}>TECHNOFY</Typography>
         </Grid>
         <Grid item>
@@ -57,4 +58,4 @@ const Header = (props) => {
   )
 }
 
-export default Header
+export default withRouter(Header)

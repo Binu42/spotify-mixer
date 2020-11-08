@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, IconButton, Box, Grid, Typography } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
+import Cookies from 'js-cookie';
 import SpotifyBtn from '../Common/Button/SpotifyBtn';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Search() {
   const classes = useStyles();
+  const accessToken = Cookies.get('access_token');
+
+  const handleSelectFromPlaylist = () => {
+    console.log("hi")
+    if (!accessToken) {
+      const URI = process.env.REACT_APP_API_URL;
+      window.location = `${URI}/login?redirectTo=playlists`;
+    } else {
+      window.location = '/playlists';
+    }
+  }
 
   return (
     <Box pt={10}>
@@ -75,7 +87,7 @@ export default function Search() {
         </Grid>
         <Grid item>
           <Box pt={2}>
-            <SpotifyBtn label="Select from my playlists" />
+            <SpotifyBtn handleOnClick={handleSelectFromPlaylist} label="Select from my playlists" />
           </Box>
         </Grid>
       </Grid>

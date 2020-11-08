@@ -1,10 +1,12 @@
+import { Box, Container } from '@material-ui/core'
 import React from 'react'
+import SearchBox from './SearchBox'
 
 const Playlist = () => {
   return (
-    <div>
-      Playlist
-    </div>
+    <Container>
+      <SearchBox />
+    </Container>
   )
 }
 
