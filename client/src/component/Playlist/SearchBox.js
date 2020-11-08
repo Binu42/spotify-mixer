@@ -1,6 +1,6 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, IconButton, Box, Grid } from '@material-ui/core';
+import React, { useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { Paper, InputBase, IconButton, Box, Grid, Divider, Switch, Typography, Button } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBox() {
   const classes = useStyles();
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleChange = () => {
+    setIsChecked(prev => !prev);
+  }
 
   return (
     <Box pt={2}>
@@ -37,9 +42,20 @@ export default function SearchBox() {
             </IconButton>
             <InputBase
               className={classes.input}
-              placeholder="Type in any song, playlists or artists"
+              placeholder={`Search by ${isChecked ? 'Artist' : 'Track'}`}
               inputProps={{ 'aria-label': 'type in any song, playlists or artists' }}
             />
+            <Divider className={classes.divider} orientation="vertical" />
+            <Typography component="div" color="secondary">
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>Artist</Grid>
+                <Grid item>
+                  <Switch size="small" checked={isChecked} onChange={handleChange} color="primary" name="artistSwitch" />
+                </Grid>
+                <Grid item>Track</Grid> |
+                <Button onClick={e => setIsChecked(false)} style={{ textTransform: "capitalize" }} color="secondary">Reset</Button>
+              </Grid>
+            </Typography>
           </Paper>
         </Grid>
       </Grid>

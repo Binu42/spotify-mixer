@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   BrandName: {
+    cursor: 'pointer',
     fontWeight: 500,
     fontSize: '1.8rem',
     lineHeight: '35px',

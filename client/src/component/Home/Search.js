@@ -4,6 +4,7 @@ import { Paper, InputBase, IconButton, Box, Grid, Typography } from '@material-u
 import { MdSearch } from 'react-icons/md'
 import Cookies from 'js-cookie';
 import SpotifyBtn from '../Common/Button/SpotifyBtn';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Search() {
+function Search({ history }) {
   const classes = useStyles();
   const accessToken = Cookies.get('access_token');
 
@@ -61,7 +62,7 @@ export default function Search() {
       const URI = process.env.REACT_APP_API_URL;
       window.location = `${URI}/login?redirectTo=playlists`;
     } else {
-      window.location = '/playlists';
+      history.push('/playlists');
     }
   }
 
@@ -94,3 +95,5 @@ export default function Search() {
     </Box>
   );
 }
+
+export default withRouter(Search);
