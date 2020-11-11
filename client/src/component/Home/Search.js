@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '10rem',
       lineHeight: '234px',
       color: 'rgba(255, 255, 255, 0.1)',
-      top: '-15%',
+      top: '-30%',
       left: "10%",
       zIndex: - 1,
     }

@@ -43,7 +43,7 @@ function Company() {
   const classes = useStyles();
 
   return (
-    <Box pt={20}>
+    <Box pt={10}>
       <Grid className={classes.company} direction="column" container justify="center" alignContent="center">
         <Grid item>
           <Box pb={1}>
@@ -51,7 +51,7 @@ function Company() {
           </Box>
         </Grid>
         <Grid item>
-          <Grid container spacing={3}>
+          <Grid justify="center" container spacing={3}>
             <Grid item>
               <img src={image} height="30" />
             </Grid>
