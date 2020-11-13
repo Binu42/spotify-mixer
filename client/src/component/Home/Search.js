@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, IconButton, Box, Grid, Typography } from '@material-ui/core';
+import { Paper, InputBase, IconButton, Box, Grid, Typography, ListItem, ListSubheader, List, ListItemIcon, ListItemText, Avatar } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
 import Cookies from 'js-cookie';
 import SpotifyBtn from '../Common/Button/SpotifyBtn';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { withRouter } from 'react-router-dom';
+import { search, extractArtistInfo, extractTrackInfo, extractPlaylistInfo } from '../../utils/spotify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,19 +54,50 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Search({ history }) {
+function Search(props) {
   const classes = useStyles();
-  const accessToken = Cookies.get('access_token');
+  const [accessToken] = useState(Cookies.get('access_token'));
+  const [tracks, setTracks] = useState([]);
+  const [artists, setArtists] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [seed, setSeed] = useState(null);
+  const [playlistSeed, setPlaylistSeed] = useState(null);
 
   const handleSelectFromPlaylist = () => {
-    console.log("hi")
     if (!accessToken) {
       const URI = process.env.REACT_APP_API_URL;
       window.location = `${URI}/login?redirectTo=playlists`;
     } else {
-      history.push('/playlists');
+      props.history.push('/playlists');
     }
   }
+
+  const searchSpotify = async (searchTerm) => {
+    if (searchTerm && searchTerm.length > 0) {
+      let { artists, tracks, playlists } = await search(accessToken, searchTerm);
+
+      artists = artists.map(extractArtistInfo);
+      tracks = tracks.map(extractTrackInfo);
+      playlists = playlists.map(extractPlaylistInfo);
+
+      setArtists(artists);
+      setTracks(tracks);
+      setPlaylists(playlists);
+    }
+  };
+
+  const options = [
+    ...(!props || !props.addSeed
+      ? [
+        ...playlists,
+        ...artists,
+        ...tracks
+      ]
+      : [
+        ...artists,
+        ...tracks
+      ])
+  ];
 
   return (
     <Box pt={10}>
@@ -75,16 +108,41 @@ function Search({ history }) {
           </Box>
         </Grid>
         <Grid item>
-          <Paper component="form" className={classes.root}>
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-              <MdSearch className={classes.icon} />
-            </IconButton>
-            <InputBase
-              className={classes.input}
-              placeholder="Type in any song, playlists or artists"
-              inputProps={{ 'aria-label': 'type in any song, playlists or artists' }}
-            />
-          </Paper>
+          <Autocomplete
+            id="Search"
+            getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+            filterOptions={(x) => x}
+            options={options}
+            groupBy={(option) => option.type}
+            autoComplete
+            includeInputInList
+            filterSelectedOptions
+            onInputChange={(event, newInputValue) => {
+              searchSpotify(newInputValue);
+            }}
+            renderInput={(params) => (
+              <div ref={params.InputProps.ref} component="form" className={classes.root}>
+                <IconButton type="submit" className={classes.iconButton} aria-label="search">
+                  <MdSearch className={classes.icon} />
+                </IconButton>
+                <InputBase
+                  {...params.inputProps}
+                  className={classes.input}
+                  placeholder="Type in any song, playlists or artists"
+                  inputProps={{ 'aria-label': 'type in any song, playlists or artists' }}
+                />
+              </div>
+            )}
+            renderOption={(option) => {
+              return (
+                <>
+                  <Avatar alt={option.name} src={option.image} /> &emsp;
+                  <ListItemText primary={option.name} />
+                </>
+              );
+            }}
+          />
+
         </Grid>
         <Grid item>
           <Box pt={2}>

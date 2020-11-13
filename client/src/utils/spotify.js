@@ -61,12 +61,21 @@ const getRecommendations = async (accessToken, parameters, seeds, limit) => {
 const extractArtistInfo = (artist) => ({
   name: artist.name,
   id: artist.id,
+  type: "Artists",
   image: artist.images && artist.images.length > 0 ? artist.images[artist.images.length - 1].url : DEFAULT_ARTIST_IMAGE,
+});
+
+const extractPlaylistInfo = (playlist) => ({
+  name: playlist.name,
+  id: playlist.id,
+  type: "Playlists",
+  image: playlist.images && playlist.images.length > 0 ? playlist.images[playlist.images.length - 1].url : DEFAULT_ARTIST_IMAGE,
 });
 
 const extractTrackInfo = (track) => ({
   name: track.name,
   id: track.id,
+  type: "Tracks",
   image:
     track.album && track.album.images && track.album.images.length > 0
       ? track.album.images[track.album.images.length - 1].url
@@ -101,4 +110,4 @@ const getTracks = async (accessToken, trackIds) => {
   return response.body.tracks.map(extractTrackInfo);
 };
 
-export { authenticate, search, getRecommendations, extractArtistInfo, extractTrackInfo, getArtists, getTracks };
+export { authenticate, search, getRecommendations, extractArtistInfo, extractPlaylistInfo, extractTrackInfo, getArtists, getTracks };
