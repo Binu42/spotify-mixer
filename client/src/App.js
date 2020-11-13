@@ -8,6 +8,7 @@ import GlobalStyles from "./GlobalStyles";
 import Spinner from './component/Common/Spinner/Spinner';
 import HomePage from './component/Home';
 import Header from './component/Common/Header'
+import Result from './component/Result';
 import Playlist from './component/Playlist';
 
 const transport = axios.create({
@@ -47,6 +48,9 @@ function App() {
             </Route>
             <Route path="/playlists">
               <Playlist />
+            </Route>
+            <Route path="/results">
+              <Result />
             </Route>
           </Switch>
         </Suspense>
