@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, IconButton, Box, Grid, Typography, ListItem, ListSubheader, List, ListItemIcon, ListItemText, Avatar } from '@material-ui/core';
+import { InputBase, IconButton, Box, Grid, Typography, ListItemText, Avatar } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md'
 import Cookies from 'js-cookie';
 import SpotifyBtn from '../Common/Button/SpotifyBtn';
