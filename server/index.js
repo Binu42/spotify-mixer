@@ -22,7 +22,7 @@ const api = require('./apiRoutes');
 //   origin: process.env.CLIENT_URL,
 //   credentials: true,
 // };
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.static('build'));
 app.use('/api', api);
