@@ -31,6 +31,6 @@ app.get('*', function (req, res) {
   res.sendFile('./build/index.html', { root: __dirname });
 });
 
-app.listen(8080, function () {
+app.listen(process.env.PORT || 8080, function () {
   console.log('Spotify playlist generator started');
 });
