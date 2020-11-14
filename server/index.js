@@ -18,10 +18,10 @@ app.use(helmet());
 
 const api = require('./apiRoutes');
 
-const corsOptions = {
-  origin: process.env.CLIENT_URL,
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: process.env.CLIENT_URL,
+//   credentials: true,
+// };
 app.use(cors(corsOptions));
 
 app.use(express.static('build'));
