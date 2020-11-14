@@ -261,7 +261,7 @@ const Result = (props) => {
     <Container>
       <SearchSeeds isResult={true} addSeed={addSeed} />
       <Box py={2}>
-        <Grid container justify="center" spacing={1}>
+        <Grid container justify="center" spacing={2}>
           <Grid item xs={12} md={8}>
             <SongList loading={loading} songs={songs} />
           </Grid>
