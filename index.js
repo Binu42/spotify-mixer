@@ -36,7 +36,7 @@ app.use('/api', api);
 // }
 
 app.get('*', function (req, res) {
-  res.sendFile('./build/index.html', { root: __dirname });
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 app.listen(process.env.PORT || 8080, function () {
