@@ -9,6 +9,8 @@ const SongList = ({ loading, songs }) => {
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState();
 
   useEffect(() => {
+    if (sounds.length)
+      setSounds([]);
     for (let i = 0; i < songs.length; i++) {
       const { id, preview_url, name, album: { images }, artists } = songs[i];
       if (preview_url)

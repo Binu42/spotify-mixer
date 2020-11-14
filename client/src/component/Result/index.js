@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from '@material-ui/core'
+import { Box, Container, Grid, Hidden } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import SearchSeeds from '../Common/SearchSeeds'
 import SaveOnSpotify from './SaveOnSpotify'
@@ -261,33 +261,64 @@ const Result = (props) => {
     <Container>
       <SearchSeeds isResult={true} addSeed={addSeed} />
       <Box py={2}>
-        <Grid container justify="center" spacing={2}>
-          <Grid item xs={12} md={8}>
-            <SongList loading={loading} songs={songs} />
+        <Hidden smDown>
+          <Grid container justify="center" spacing={2}>
+            <Grid item xs={12} md={8}>
+              <SongList loading={loading} songs={songs} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <SaveOnSpotify save={accessToken ? savePlaylist : saveStateAndLogin} name={name} setName={setName} />
+              <TrackListSettings
+                values={{
+                  count,
+                  energy,
+                  popularity,
+                  danceability,
+                  tempo,
+                  acousticness,
+                  valence,
+                }}
+                handlers={{
+                  setCount,
+                  setEnergy,
+                  setPopularity,
+                  setDanceability,
+                  setTempo,
+                  setAcousticness,
+                  setValence,
+                }} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <SaveOnSpotify save={accessToken ? savePlaylist : saveStateAndLogin} name={name} setName={setName} />
-            <TrackListSettings
-              values={{
-                count,
-                energy,
-                popularity,
-                danceability,
-                tempo,
-                acousticness,
-                valence,
-              }}
-              handlers={{
-                setCount,
-                setEnergy,
-                setPopularity,
-                setDanceability,
-                setTempo,
-                setAcousticness,
-                setValence,
-              }} />
+        </Hidden>
+        <Hidden mdUp>
+          <Grid container justify="center" spacing={2}>
+            <Grid item xs={12} md={8}>
+              <SaveOnSpotify save={accessToken ? savePlaylist : saveStateAndLogin} name={name} setName={setName} />
+              <TrackListSettings
+                values={{
+                  count,
+                  energy,
+                  popularity,
+                  danceability,
+                  tempo,
+                  acousticness,
+                  valence,
+                }}
+                handlers={{
+                  setCount,
+                  setEnergy,
+                  setPopularity,
+                  setDanceability,
+                  setTempo,
+                  setAcousticness,
+                  setValence,
+                }} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <SongList loading={loading} songs={songs} />
+            </Grid>
           </Grid>
-        </Grid>
+        </Hidden>
       </Box>
     </Container>
   )

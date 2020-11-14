@@ -64,6 +64,7 @@ const TrackListSettings = ({ values, handlers }) => {
     <Card className={classes.card}>
       <Hidden mdUp implementation='css'>
         <CardHeader
+          onClick={handleExpandClick}
           className={classes.cardHeader}
           classes={{
             title: classes.cardHeaderTitle
@@ -86,11 +87,13 @@ const TrackListSettings = ({ values, handlers }) => {
           <Settings values={values} handlers={handlers} />
         </CardContent>
       </Hidden>
-      <Collapse in={expanded}>
-        <CardContent className={classes.cardContent}>
-          <Settings values={values} handlers={handlers} />
-        </CardContent>
-      </Collapse>
+      <Hidden mdUp>
+        <Collapse in={expanded}>
+          <CardContent className={classes.cardContent}>
+            <Settings values={values} handlers={handlers} />
+          </CardContent>
+        </Collapse>
+      </Hidden>
     </Card>
   )
 }
