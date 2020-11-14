@@ -23,6 +23,10 @@ body {
   filter: opacity(0.5);
 }
 
+.active {
+  background-color: #e4e4e421;
+}
+
 .MuiTypography-colorTextSecondary {
   color: #c1b4bc !important;
 }

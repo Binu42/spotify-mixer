@@ -106,7 +106,6 @@ const Result = (props) => {
   };
 
   useEffect(() => {
-    console.log(props)
     if (checkStateStored()) {
       restoreState();
     } else if (props?.location?.state?.seed) {
@@ -171,7 +170,7 @@ const Result = (props) => {
             });
 
             let playlistName = playlist?.name || props?.location?.state?.playlist?.name;
-            setName(`remixr:${playlistName}`);
+            setName(`technofy:${playlistName}`);
             initialFetchComplete.current = true;
             setLoading(false);
           } catch (e) {
@@ -232,6 +231,7 @@ const Result = (props) => {
         },
         (error) => {
           console.log(error);
+          saveStateAndLogin();
         }
       );
   };
@@ -266,7 +266,7 @@ const Result = (props) => {
             <SongList loading={loading} songs={songs} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <SaveOnSpotify />
+            <SaveOnSpotify save={accessToken ? savePlaylist : saveStateAndLogin} name={name} setName={setName} />
             <TrackListSettings
               values={{
                 count,

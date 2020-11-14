@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core'
+import ReactJkMusicPlayer from 'react-jinke-music-player'
+import 'react-jinke-music-player/assets/index.css'
 
 const SongList = ({ loading, songs }) => {
+  const [sounds, setSounds] = useState([]);
+  const [currentlyPlayingId, setCurrentlyPlayingId] = useState();
+
+  useEffect(() => {
+    for (let i = 0; i < songs.length; i++) {
+      const { id, preview_url, name, album: { images }, artists } = songs[i];
+      if (preview_url)
+        setSounds(prev => [...prev, {
+          id,
+          name,
+          musicSrc: preview_url,
+          cover: images[0]?.url,
+          singer: artists?.map((artist) => artist.name),
+          duration: 30,
+        }])
+    }
+  }, [songs])
+
   if (loading) return <SongLoading />
+
   return (
     <List component="ul">
       {
@@ -14,9 +35,9 @@ const SongList = ({ loading, songs }) => {
 
           return (
             <div key={id}>
-              <ListItem>
+              <ListItem className={currentlyPlayingId === id ? "active" : ''}>
                 <ListItemAvatar>
-                  <Avatar variant="square" alt={name} src={images[0].url} style={{ width: 50, height: 50, borderRadius: 5, marginRight: 10 }} />
+                  <Avatar variant="square" alt={name} src={images[0]?.url} style={{ width: 50, height: 50, borderRadius: 5, marginRight: 10 }} />
                 </ListItemAvatar>
                 <ListItemText className="text-white" primary={name} secondary={artists?.map((artist, i) => i === artists.length - 1 ? `${artist.name}` : `${artist.name}, `)} />
                 <ListItemSecondaryAction className="text-white">
@@ -28,6 +49,17 @@ const SongList = ({ loading, songs }) => {
           )
         })
       }
+      <div style={{ marginTop: '100px' }}></div>
+      <ReactJkMusicPlayer
+        audioLists={sounds}
+        theme="dark"
+        onAudioPlay={({ id }) => setCurrentlyPlayingId(id)}
+        showDownload={false}
+        showReload={false}
+        defaultPosition={{ bottom: 10, right: 10 }}
+        showThemeSwitch={false}
+        remove={false}
+      />
     </List>
   )
 }

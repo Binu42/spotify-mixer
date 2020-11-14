@@ -8,7 +8,11 @@ const useStyles = makeStyles((theme) => ({
   card: {
     background: 'transparent',
     marginTop: '1rem',
-    border: '1px solid #fff'
+    border: '1px solid #fff',
+    [theme.breakpoints.up("md")]: {
+      position: 'sticky',
+      top: '20px'
+    },
   },
   cardHeader: {
     padding: '0.5rem',
