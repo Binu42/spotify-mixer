@@ -4,7 +4,7 @@ import SaveOnSpotify from './SaveOnSpotify'
 import SearchBox from './SearchBox'
 import TrackListSettings from './TrackListSettings'
 
-const Result = () => {
+const Result = (props) => {
   return (
     <Container>
       <SearchBox />

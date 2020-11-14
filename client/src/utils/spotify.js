@@ -68,7 +68,7 @@ const extractArtistInfo = (artist) => ({
 const extractPlaylistInfo = (playlist) => ({
   name: playlist.name,
   id: playlist.id,
-  type: "Playlists",
+  type: "Playlist",
   image: playlist.images && playlist.images.length > 0 ? playlist.images[playlist.images.length - 1].url : DEFAULT_ARTIST_IMAGE,
 });
 

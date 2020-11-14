@@ -53,13 +53,13 @@ function Company() {
         <Grid item>
           <Grid justify="center" container spacing={3}>
             <Grid item>
-              <img src={image} height="30" />
+              <img src={image} height="30" alt="company" />
             </Grid>
             <Grid item>
-              <img src={image1} height="30" />
+              <img src={image1} height="30" alt="company" />
             </Grid>
             <Grid item>
-              <img src={image2} height="30" />
+              <img src={image2} height="30" alt="company" />
             </Grid>
           </Grid>
         </Grid>

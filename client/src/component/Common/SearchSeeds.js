@@ -5,6 +5,7 @@ import { MdSearch } from 'react-icons/md'
 import Cookies from 'js-cookie';
 import { InputBase, IconButton, ListItemText, Avatar } from '@material-ui/core';
 import { search, extractArtistInfo, extractTrackInfo, extractPlaylistInfo } from '../../utils/spotify';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +76,20 @@ const SearchSeeds = (props) => {
     }
   };
 
+  const addSeed = option => {
+    if (props && props.addSeed) {
+      props.addSeed(option);
+    } else {
+      if (option.type === 'Playlist') {
+        setPlaylistSeed(option);
+      } else if (option.type === 'Tracks') {
+        setSeed({ artists: [], tracks: [option] });
+      } else {
+        setSeed({ artists: [option], tracks: [] });
+      }
+    }
+  };
+
   const options = [
     ...(!props || !props.addSeed
       ? [
@@ -88,14 +103,46 @@ const SearchSeeds = (props) => {
       ])
   ];
 
+  if (playlistSeed) {
+    console.log(playlistSeed)
+    return (
+      <Redirect
+        to={{
+          pathname: '/results',
+          state: {
+            playlist: {
+              id: playlistSeed.id,
+              name: playlistSeed.name,
+              image: playlistSeed.image,
+            },
+          },
+        }}
+      />
+    );
+  }
+
+  if (seed) {
+    console.log(seed)
+    return (
+      <Redirect
+        to={{
+          pathname: '/results',
+          state: { seed },
+        }}
+      />
+    );
+  }
+
   return (
     <Autocomplete
+      noOptionsText="Type to search"
       id="Search"
       getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
       filterOptions={(x) => x}
       options={options}
       groupBy={(option) => option.type}
       autoComplete
+      onChange={(event, value) => addSeed(value)}
       includeInputInList
       filterSelectedOptions
       onInputChange={(event, newInputValue) => {
