@@ -3,6 +3,7 @@
   "name": "Technofy",
   "scripts": {
     "start": "npm start --prefix server",
+    "heroku-postbuild": "cd client && npm i && npm run build",
     "client": "npm start --prefix client",
     "server": "npm run devServer --prefix server",
     "dev": "concurrently --kill-others-on-fail \"npm run client\"  \"npm run server\""

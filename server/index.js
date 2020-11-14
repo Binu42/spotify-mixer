@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
+const path = require('path');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -18,17 +19,23 @@ app.use(helmet());
 
 const api = require('./apiRoutes');
 
-// const corsOptions = {
-//   origin: process.env.CLIENT_URL,
-//   credentials: true,
-// };
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(express.static('build'));
 app.use('/api', api);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 app.get('*', function (req, res) {
-  console.log('hi')
   res.sendFile('./build/index.html', { root: __dirname });
 });
 
