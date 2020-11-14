@@ -5,8 +5,9 @@ import SaveOnSpotify from './SaveOnSpotify'
 import TrackListSettings from './TrackListSettings'
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { authenticate, getRecommendations, getArtists, getTracks } from '../../utils/spotify.js';
+import SongList from './SongList'
 
 const transport = axios.create({
   withCredentials: true,
@@ -39,7 +40,7 @@ const Result = (props) => {
   const [error, setError] = useState(false);
   const initialFetchComplete = useRef(false);
   // Parameters
-  const [count, setCount] = useState(25);
+  const [count, setCount] = useState(10);
   const [popularity, setPopularity] = useState({ min: 0, max: 100 });
   const [danceability, setDanceability] = useState({ min: 0, max: 1 });
   const [energy, setEnergy] = useState({ min: 0, max: 1 });
@@ -105,6 +106,7 @@ const Result = (props) => {
   };
 
   useEffect(() => {
+    console.log(props)
     if (checkStateStored()) {
       restoreState();
     } else if (props?.location?.state?.seed) {
@@ -260,10 +262,10 @@ const Result = (props) => {
       <SearchSeeds isResult={true} addSeed={addSeed} />
       <Box py={2}>
         <Grid container justify="center" spacing={1}>
-          <Grid item xs={12} md={9}>
-            lorem10000
+          <Grid item xs={12} md={8}>
+            <SongList loading={loading} songs={songs} />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <SaveOnSpotify />
             <TrackListSettings
               values={{
@@ -291,4 +293,4 @@ const Result = (props) => {
   )
 }
 
-export default Result
+export default withRouter(Result) 

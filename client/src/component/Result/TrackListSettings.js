@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     clear: "both"
   },
   cardContent: {
-    padding: '0.5rem',
+    padding: '1rem',
     color: '#FF8AD5'
   },
   colorSec: {
@@ -112,7 +112,7 @@ const Settings = ({ values, handlers }) => {
           id="Max-number-of-tracks"
           value={values.count}
           classes={{ root: classes.colorSec }}
-          onChange={e => values.setCount(e.target.value)}
+          onChange={e => handlers.setCount(e.target.value)}
         >
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>

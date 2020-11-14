@@ -23,6 +23,10 @@ body {
   filter: opacity(0.5);
 }
 
+.MuiTypography-colorTextSecondary {
+  color: #c1b4bc !important;
+}
+
 @media (min-width: 40rem) {
   #footer-image {
     background-size: 100% 100%;
