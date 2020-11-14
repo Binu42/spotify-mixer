@@ -28,6 +28,7 @@ app.use(express.static('build'));
 app.use('/api', api);
 
 app.get('*', function (req, res) {
+  console.log('hi')
   res.sendFile('./build/index.html', { root: __dirname });
 });
 

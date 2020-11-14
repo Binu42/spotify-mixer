@@ -2,8 +2,9 @@
   "private": true,
   "name": "Technofy",
   "scripts": {
+    "start": "npm run devServer --prefix server",
     "client": "npm start --prefix client",
-    "server": "npm start --prefix server",
+    "server": "npm run devServer --prefix server",
     "dev": "concurrently --kill-others-on-fail \"npm run client\"  \"npm run server\""
   },
   "dependencies": {

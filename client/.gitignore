@@ -24,3 +24,8 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# REACT_APP_API_URL="https://technofy-mixer.herokuapp.com/api"
+# REACT_APP_CLIENT_URL="https://technofymixer.netlify.app/"
+# REACT_APP_REDIRECT_URI="https://technofy-mixer.herokuapp.com/api/callback"
+# GENERATE_SOURCEMAP=false
