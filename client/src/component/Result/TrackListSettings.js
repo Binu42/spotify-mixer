@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TrackListSettings = () => {
+const TrackListSettings = ({ values, handlers }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
@@ -79,12 +79,12 @@ const TrackListSettings = () => {
       </Hidden>
       <Hidden smDown implementation='css'>
         <CardContent className={classes.cardContent}>
-          <Settings />
+          <Settings values={values} handlers={handlers} />
         </CardContent>
       </Hidden>
       <Collapse in={expanded}>
         <CardContent className={classes.cardContent}>
-          <Settings />
+          <Settings values={values} handlers={handlers} />
         </CardContent>
       </Collapse>
     </Card>
@@ -93,17 +93,14 @@ const TrackListSettings = () => {
 
 export default TrackListSettings
 
-const Settings = () => {
+const Settings = ({ values, handlers }) => {
   const classes = useStyles();
-  const [noOfTracks, setNoOfTracks] = useState(5);
-  const handleChange = (event) => {
-    setNoOfTracks(event.target.value);
-  };
 
-  const [value, setValue] = useState([20, 37]);
-
-  const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+  const onChangeHandler = (value, handler) => {
+    handler({
+      min: value[0],
+      max: value[1],
+    });
   };
 
   return (
@@ -113,24 +110,27 @@ const Settings = () => {
         <Select
           labelId="Max-number-of-tracks"
           id="Max-number-of-tracks"
-          value={noOfTracks}
+          value={values.count}
           classes={{ root: classes.colorSec }}
-          onChange={handleChange}
+          onChange={e => values.setCount(e.target.value)}
         >
-          <MenuItem value={5}>Five</MenuItem>
           <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={15}>Fifteen</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={25}>Twenty-five</MenuItem>
+          <MenuItem value={50}>Fifty</MenuItem>
+          <MenuItem value={75}>Seventy-five</MenuItem>
         </Select>
       </FormControl>
       <Typography id="range-slider" className={classes.leftSideText} gutterBottom>
         Popularity
       </Typography>
       <Slider
-        value={value}
+        value={[values.popularity.min, values.popularity.max]}
         color="secondary"
-        onChange={handleSliderChange}
+        min={0}
+        max={100}
+        step={1}
+        onChange={(event, value) => onChangeHandler(value, handlers.setPopularity)}
         valueLabelDisplay="auto"
       />
       <div>
@@ -147,9 +147,12 @@ const Settings = () => {
         Energy
       </Typography>
       <Slider
-        value={value}
+        value={[values.energy.min, values.energy.max]}
+        min={0}
+        max={1}
+        step={0.01}
         color="secondary"
-        onChange={handleSliderChange}
+        onChange={(event, value) => onChangeHandler(value, handlers.setEnergy)}
         valueLabelDisplay="auto"
       />
       <div>
@@ -160,7 +163,7 @@ const Settings = () => {
           No Chill
         </Typography>
       </div>
-      <div className={classes.sliderText}></div>
+      {/* <div className={classes.sliderText}></div>
       <Divider />
       <Typography className={classes.sliderText} id="range-slider" gutterBottom>
         Vocal
@@ -178,16 +181,19 @@ const Settings = () => {
         <Typography className={classes.leftSideText} id="range-slider" gutterBottom>
           A Ton
         </Typography>
-      </div>
+      </div> */}
       <div className={classes.sliderText}></div>
       <Divider />
       <Typography className={classes.sliderText} id="range-slider" gutterBottom>
         Tempo
       </Typography>
       <Slider
-        value={value}
+        value={[values.tempo.min, values.tempo.max]}
         color="secondary"
-        onChange={handleSliderChange}
+        min={50}
+        max={200}
+        step={1}
+        onChange={(event, value) => onChangeHandler(value, handlers.setTempo)}
         valueLabelDisplay="auto"
       />
       <div>
@@ -204,9 +210,12 @@ const Settings = () => {
         Danceable
       </Typography>
       <Slider
-        value={value}
+        value={[values.danceability.min, values.danceability.max]}
+        min={0}
+        max={1}
+        step={0.01}
         color="secondary"
-        onChange={handleSliderChange}
+        onChange={(event, value) => onChangeHandler(value, handlers.setDanceability)}
         valueLabelDisplay="auto"
       />
       <div>
@@ -223,9 +232,12 @@ const Settings = () => {
         Mood
       </Typography>
       <Slider
-        value={value}
+        value={[values.valence.min, values.valence.max]}
         color="secondary"
-        onChange={handleSliderChange}
+        min={0}
+        max={1}
+        step={0.01}
+        onChange={(event, value) => onChangeHandler(value, handlers.setValence)}
         valueLabelDisplay="auto"
       />
       <div>
@@ -242,9 +254,12 @@ const Settings = () => {
         Acoustic
       </Typography>
       <Slider
-        value={value}
+        value={[values.acousticness.min, values.acousticness.max]}
         color="secondary"
-        onChange={handleSliderChange}
+        min={0}
+        max={1}
+        step={0.01}
+        onChange={(event, value) => onChangeHandler(value, handlers.setAcousticness)}
         valueLabelDisplay="auto"
       />
       <div>

@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { MdSearch } from 'react-icons/md'
 import Cookies from 'js-cookie';
-import { InputBase, IconButton, ListItemText, Avatar } from '@material-ui/core';
+import { InputBase, IconButton, ListItemText, Avatar, Hidden, Divider, Typography, Grid, Switch, Button } from '@material-ui/core';
 import { search, extractArtistInfo, extractTrackInfo, extractPlaylistInfo } from '../../utils/spotify';
 import { Redirect } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme, isResult) => ({
   root: {
     padding: '2px 4px',
     display: 'flex',
@@ -61,6 +61,11 @@ const SearchSeeds = (props) => {
   const [playlists, setPlaylists] = useState([]);
   const [seed, setSeed] = useState(null);
   const [playlistSeed, setPlaylistSeed] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleSwitchChange = () => {
+    setIsChecked(prev => !prev);
+  }
 
   const searchSpotify = async (searchTerm) => {
     if (searchTerm && searchTerm.length > 0) {
@@ -104,7 +109,6 @@ const SearchSeeds = (props) => {
   ];
 
   if (playlistSeed) {
-    console.log(playlistSeed)
     return (
       <Redirect
         to={{
@@ -122,7 +126,6 @@ const SearchSeeds = (props) => {
   }
 
   if (seed) {
-    console.log(seed)
     return (
       <Redirect
         to={{
@@ -149,16 +152,35 @@ const SearchSeeds = (props) => {
         searchSpotify(newInputValue);
       }}
       renderInput={(params) => (
-        <div ref={params.InputProps.ref} component="form" className={classes.root}>
-          <IconButton type="submit" className={classes.iconButton} aria-label="search">
-            <MdSearch className={classes.icon} />
-          </IconButton>
+        <div ref={params.InputProps.ref} component="form" style={{ width: props.isResult && '100%' }} className={classes.root}>
+          {props.isResult ? <Hidden smDown>
+            <IconButton type="submit" className={classes.iconButton} aria-label="search">
+              <MdSearch className={classes.icon} />
+            </IconButton>
+          </Hidden> :
+            <IconButton type="submit" className={classes.iconButton} aria-label="search">
+              <MdSearch className={classes.icon} />
+            </IconButton>
+          }
           <InputBase
             {...params.inputProps}
             className={classes.input}
-            placeholder="Type in any song, playlists or artists"
+            placeholder={props.isResult ? `Search by ${isChecked ? 'Artist' : 'Track'}` : "Type in any song, playlists or artists"}
             inputProps={{ 'aria-label': 'type in any song, playlists or artists' }}
           />
+          {props.isResult && <>
+            <Divider orientation="vertical" />
+            <Typography component="div" color="secondary">
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>Artist</Grid>
+                <Grid item>
+                  <Switch size="small" checked={isChecked} onChange={handleSwitchChange} color="primary" name="artistSwitch" />
+                </Grid>
+                <Grid item>Track</Grid> |
+                <Button onClick={e => setIsChecked(false)} style={{ textTransform: "capitalize" }} color="secondary">Reset</Button>
+              </Grid>
+            </Typography>
+          </>}
         </div>
       )}
       renderOption={(option) => {
