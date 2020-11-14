@@ -4,7 +4,7 @@
   "description": "Generates a spotify playlist similar to a given user playlist",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon index.js",
     "deploy": "pm2 startOrReload pm2.json",
     "undeploy": "pm2 delete pm2.json"
   },
