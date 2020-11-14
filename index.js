@@ -28,16 +28,17 @@ app.use(cors(corsOptions));
 app.use(express.static('build'));
 app.use('/api', api);
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static('client/build'));
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-//   });
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+const routes = ['/', '/playlists', '/results'];
+
+routes.forEach(route => {
+  app.get(route, function (req, res) {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+})
 
 app.listen(process.env.PORT || 8080, function () {
   console.log('Spotify playlist generator started');
