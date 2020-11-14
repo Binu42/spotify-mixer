@@ -40,8 +40,6 @@ const Header = (props) => {
 
   const login = () => {
     let URI = process.env.REACT_APP_API_URL;
-    if (process.env.NODE_ENV === "production")
-      URI = process.env.API_URL;
     console.log(URI)
     window.location = `${URI}/login`;
   };
