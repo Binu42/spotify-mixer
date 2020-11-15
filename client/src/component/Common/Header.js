@@ -1,9 +1,9 @@
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react'
 import Cookies from 'js-cookie';
 import SpotifyBtn from './Button/SpotifyBtn'
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
+  const [redirectPath, setRedirectPath] = useState(null);
   const classes = useStyles();
   const accessToken = Cookies.get('access_token');
   const isLoggedIn = accessToken && accessToken !== '';
@@ -42,6 +43,10 @@ const Header = (props) => {
     let URI = process.env.REACT_APP_API_URL;
     window.location = `${URI}/login`;
   };
+
+  if (redirectPath) {
+    return <Redirect to={redirectPath} />;
+  }
 
   return (
     <div className={classes.header}>
