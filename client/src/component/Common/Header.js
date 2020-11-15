@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-  const [redirectPath, setRedirectPath] = useState(null);
+  // const [redirectPath, setRedirectPath] = useState(null);
   const classes = useStyles();
   const accessToken = Cookies.get('access_token');
   const isLoggedIn = accessToken && accessToken !== '';
@@ -44,9 +44,9 @@ const Header = (props) => {
     window.location = `${URI}/login`;
   };
 
-  if (redirectPath) {
-    return <Redirect to={redirectPath} />;
-  }
+  // if (redirectPath) {
+  //   return <Redirect to={redirectPath} />;
+  // }
 
   return (
     <div className={classes.header}>
