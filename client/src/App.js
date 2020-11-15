@@ -10,6 +10,7 @@ import HomePage from './component/Home';
 import Header from './component/Common/Header'
 import Result from './component/Result';
 import Playlist from './component/Playlist';
+import ScrollToTop from './component/Common/ScrollToTop';
 
 const transport = axios.create({
   withCredentials: true,
@@ -40,6 +41,7 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
+        <ScrollToTop />
         <Header setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} />
         <Suspense fallback={<Spinner />}>
           <Switch>
