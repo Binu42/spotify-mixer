@@ -99,7 +99,7 @@ function Playlist() {
               return <PlaylistCard playlist={item} key={item.id} />;
             })}
           {
-            filteredPlaylists && filteredPlaylists.length === 0 && <Typography variant="h5" style={{ color: "#fff", textAlign: 'center' }}>No playlist exist</Typography>
+            filteredPlaylists && filteredPlaylists.length === 0 && !loading && <Typography variant="h5" style={{ color: "#fff", textAlign: 'center' }}>No playlist exist</Typography>
           }
         </Grid>
       </div>

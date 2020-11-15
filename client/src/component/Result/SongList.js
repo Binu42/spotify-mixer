@@ -75,9 +75,9 @@ const SongLoading = () => {
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => (
           <ListItem key={index}>
             <ListItemAvatar>
-              <Skeleton variant="rect" width={60} height={60} />
+              <Skeleton variant="rect" style={{ background: 'rgba(245, 241, 218, 0.473)', borderRadius: 5 }} width={50} height={50} />
             </ListItemAvatar>
-            <ListItemText primary={<Skeleton />} secondary={<Skeleton />} />
+            <ListItemText primary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} secondary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} />
           </ListItem>
         ))
       }
