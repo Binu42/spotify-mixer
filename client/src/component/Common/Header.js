@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react'
+import React, { useState } from 'react'
 import Cookies from 'js-cookie';
 import SpotifyBtn from './Button/SpotifyBtn'
 import { Redirect, withRouter } from 'react-router-dom';
