@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const path = require('path');
 
 const app = express();
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 // app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,28 +24,19 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
 app.use('/api', api);
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static('client/build'));
-// }
-
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
+  const routes = ['/', '/playlists', '/results'];
+  routes.forEach(route => {
+    app.get(route, function (req, res) {
+      console.log(__dirname)
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    })
+  })
 }
-
-// app.use(express.static('build'));
-
-// const routes = ['/', '/playlists', '/results'];
-
-// routes.forEach(route => {
-//   app.get(route, function (req, res) {
-//     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-//   });
-// })
 
 app.listen(process.env.PORT || 8080, function () {
   console.log('Spotify playlist generator started');
