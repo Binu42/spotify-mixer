@@ -10,7 +10,7 @@ const path = require('path');
 
 const app = express();
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -25,12 +25,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(express.static('build'));
-app.use('/api', api);
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
+
+// app.use(express.static('build'));
+app.use('/api', api);
 
 const routes = ['/', '/playlists', '/results'];
 
