@@ -6,11 +6,12 @@ import axios from 'axios';
 import theme from "./Theme";
 import GlobalStyles from "./GlobalStyles";
 import Spinner from './component/Common/Spinner/Spinner';
-import HomePage from './component/Home';
 import Header from './component/Common/Header'
-import Result from './component/Result';
-import Playlist from './component/Playlist';
 import ScrollToTop from './component/Common/ScrollToTop';
+
+const HomePage = lazy(() => import("./component/Home"));
+const Result = lazy(() => import("./component/Result"));
+const Playlist = lazy(() => import("./component/Playlist"));
 
 const transport = axios.create({
   withCredentials: true,
