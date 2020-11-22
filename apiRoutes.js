@@ -93,7 +93,6 @@ router.get('/playlists', async (req, res) => {
 router.get('/results/:id', async (req, res) => {
   try {
     const playlistId = req.params.id;
-    console.log(`Playlist ID: ${playlistId}`);
 
     const isLoggedIn =
       req.cookies.access_token !== undefined &&
@@ -110,8 +109,15 @@ router.get('/results/:id', async (req, res) => {
       isLoggedIn
     );
 
-    console.log(parameters);
     const songs = await playlist.getRecommendations(loggedInSpotify, parameters);
+    const trackIds = songs.map(song => song.id);
+    try {
+      const response = await loggedInSpotify.getAudioFeaturesForTracks(trackIds);
+      for (let i = 0; i < songs.length; i++)
+        songs[i].features = response.body.audio_features[i];
+    } catch (error) {
+      console.log(error)
+    }
     res.json({ songs, parameters });
   } catch (e) {
     console.log(e);

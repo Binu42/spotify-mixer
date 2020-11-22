@@ -247,7 +247,7 @@ async function getArtistRankRecommendations(loggedInSpotify, tracks, numOfTopArt
   artistIds = _.countBy(artistIds);
 
   // Sort by count in descending order
-  const sorted = Object.keys(artistIds).sort(function(a, b) {
+  const sorted = Object.keys(artistIds).sort(function (a, b) {
     return -(artistIds[a] - artistIds[b]);
   });
 
@@ -306,7 +306,7 @@ async function getTrackRankRecommendations(loggedInSpotify, tracks, numOfTopTrac
   // Count number of occurrences of each id in array
   fullTrackList = _.countBy(fullTrackList);
   // Sort by count in descending order
-  const sorted = Object.keys(fullTrackList).sort(function(a, b) {
+  const sorted = Object.keys(fullTrackList).sort(function (a, b) {
     return -(fullTrackList[a] - fullTrackList[b]);
   });
 

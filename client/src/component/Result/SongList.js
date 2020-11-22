@@ -49,7 +49,7 @@ const SongList = ({ loading, songs }) => {
                   <ListItemText className="text-white" primary={name} secondary={artists?.map((artist, i) => i === artists.length - 1 ? `${artist.name}` : `${artist.name}, `)} />
                   <ListItemSecondaryAction className="text-white">
                     {explicit && <Chip
-                      label="Explicit"
+                      label={window.innerWidth > 1000 ? "Explicit" : "E"}
                       color="secondary"
                       size="small"
                       variant="outlined"

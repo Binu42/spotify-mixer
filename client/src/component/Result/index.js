@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Redirect, withRouter } from 'react-router-dom';
 import { authenticate, getRecommendations, getArtists, getTracks } from '../../utils/spotify.js';
 import SongList from './SongList'
+import { FaSortAmountDownAlt, FaSortAmountUp } from 'react-icons/fa'
 
 const transport = axios.create({
   withCredentials: true,
@@ -49,6 +50,8 @@ const Result = (props) => {
   const [tempo, setTempo] = useState({ min: 50, max: 200 });
   const [seeds, setSeeds] = useState();
   const [seedColors, setSeedColors] = useState({});
+  const [sortBy, setSortBy] = useState("");
+  const [sort, setSort] = useState(0);
 
   const saveStateAndLogin = () => {
     localStorage.setItem('songs', JSON.stringify(songs));
@@ -257,6 +260,20 @@ const Result = (props) => {
       });
     }
   };
+
+  const sortTrack = (by) => {
+    setSortBy(by);
+    setSort(!sort);
+    console.log(sort, by, songs[0].features[by])
+    if (sort)
+      songs.sort((a, b) => {
+        return a.features[by] - b.features[by];
+      })
+    else
+      songs.sort((a, b) => {
+        return b.features[by] - a.features[by];
+      })
+  }
   return (
     <Container>
       <SearchSeeds isResult={true} addSeed={addSeed} />
@@ -280,9 +297,12 @@ const Result = (props) => {
                     </div>
                     <div className="float-right">
                       <ButtonGroup color="secondary" aria-label="sort track">
-                        <Button variant="outlined">Danceability</Button>
-                        <Button variant="outlined">Energy</Button>
-                        <Button variant="outlined">typo</Button>
+                        <Button onClick={e => sortTrack("danceability")} endIcon={sortBy === "danceability" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Danceability</Button>
+                        <Button onClick={e => sortTrack("energy")} endIcon={sortBy === "energy" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Energy</Button>
+                        <Button onClick={e => sortTrack("tempo")} endIcon={sortBy === "tempo" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Tempo</Button>
                       </ButtonGroup>
                     </div>
                   </> : ""
@@ -347,12 +367,31 @@ const Result = (props) => {
                     <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
                   </div></>}
               </div>
+              <div className="track-header">
+                {
+                  songs.length ? <>
+                    <div className="float-left">
+                      <Typography variant="subtitle2" className="text-light">Sort by:</Typography>
+                    </div>
+                    <div className="float-right">
+                      <ButtonGroup color="secondary" aria-label="sort track">
+                        <Button onClick={e => sortTrack("danceability")} endIcon={sortBy === "danceability" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Danceability</Button>
+                        <Button onClick={e => sortTrack("energy")} endIcon={sortBy === "energy" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Energy</Button>
+                        <Button onClick={e => sortTrack("tempo")} endIcon={sortBy === "tempo" ? sort ?
+                          (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Tempo</Button>
+                      </ButtonGroup>
+                    </div>
+                  </> : ""
+                }
+              </div>
               <SongList loading={loading} songs={songs} />
             </Grid>
           </Grid>
         </Hidden>
       </Box>
-    </Container>
+    </Container >
   )
 }
 

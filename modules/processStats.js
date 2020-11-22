@@ -20,7 +20,7 @@ async function calculateStats(loggedInSpotify, playlistId, isLoggedIn) {
   const seed_tracks = output[2];
 
   let options = buildRecommendationOptions(parameters, seed_artists, seed_tracks);
-  return {parameters: options, tracks, artists};
+  return { parameters: options, tracks, artists };
 }
 
 function calculateFeatureParameters(audioFeatures) {
