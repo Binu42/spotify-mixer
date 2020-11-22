@@ -283,20 +283,20 @@ const Result = (props) => {
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12} md={8}>
               <div className="track-header">
-                {songs.length ? <><div className="float-left">
+                {songs.length ? <><div>
                   <Typography variant="h4" color="secondary">Tracklist</Typography>
                 </div>
-                  <div className="float-right">
+                  <div>
                     <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
                   </div></> : ""}
               </div>
-              <div className="track-header">
+              <div className="sort-track">
                 {
                   songs.length ? <>
-                    <div className="float-left">
+                    <div>
                       <Typography variant="subtitle2" className="text-light">Sort by:</Typography>
                     </div>
-                    <div className="float-right">
+                    <div>
                       <ButtonGroup color="secondary" aria-label="sort track">
                         <Button onClick={e => sortTrack("danceability")} endIcon={sortBy === "danceability" ? sort ?
                           (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Danceability</Button>
@@ -361,20 +361,20 @@ const Result = (props) => {
             </Grid>
             <Grid item xs={12} md={4}>
               <div className="track-header">
-                {songs.length && <><div className="float-left">
+                {songs.length && <><div>
                   <Typography variant="h4" color="secondary">Tracklist</Typography>
                 </div>
-                  <div className="float-right">
+                  <div>
                     <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
                   </div></>}
               </div>
-              <div className="track-header">
+              <div className="sort-track">
                 {
                   songs.length ? <>
-                    <div className="float-left">
+                    <div>
                       <Typography variant="subtitle2" className="text-light">Sort by:</Typography>
                     </div>
-                    <div className="float-right">
+                    <div>
                       <ButtonGroup color="secondary" aria-label="sort track">
                         <Button onClick={e => sortTrack("danceability")} endIcon={sortBy === "danceability" ? sort ?
                           (<FaSortAmountUp />) : (<FaSortAmountDownAlt />) : ""} variant="outlined">Danceability</Button>
