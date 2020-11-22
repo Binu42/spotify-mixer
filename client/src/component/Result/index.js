@@ -264,15 +264,16 @@ const Result = (props) => {
   const sortTrack = (by) => {
     setSortBy(by);
     setSort(!sort);
-    console.log(sort, by, songs[0].features[by])
-    if (sort)
-      songs.sort((a, b) => {
-        return a.features[by] - b.features[by];
-      })
-    else
-      songs.sort((a, b) => {
-        return b.features[by] - a.features[by];
-      })
+    if (songs) {
+      if (sort)
+        songs.sort((a, b) => {
+          return a.features[by] - b.features[by];
+        })
+      else
+        songs.sort((a, b) => {
+          return b.features[by] - a.features[by];
+        })
+    }
   }
   return (
     <Container>
