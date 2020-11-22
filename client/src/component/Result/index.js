@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Hidden } from '@material-ui/core'
+import { Box, Button, ButtonGroup, Container, Grid, Hidden, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import SearchSeeds from '../Common/SearchSeeds'
 import SaveOnSpotify from './SaveOnSpotify'
@@ -264,6 +264,30 @@ const Result = (props) => {
         <Hidden smDown>
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12} md={8}>
+              <div className="track-header">
+                {songs.length ? <><div className="float-left">
+                  <Typography variant="h4" color="secondary">Tracklist</Typography>
+                </div>
+                  <div className="float-right">
+                    <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
+                  </div></> : ""}
+              </div>
+              <div className="track-header">
+                {
+                  songs.length ? <>
+                    <div className="float-left">
+                      <Typography variant="subtitle2" className="text-light">Sort by:</Typography>
+                    </div>
+                    <div className="float-right">
+                      <ButtonGroup color="secondary" aria-label="sort track">
+                        <Button variant="outlined">Danceability</Button>
+                        <Button variant="outlined">Energy</Button>
+                        <Button variant="outlined">typo</Button>
+                      </ButtonGroup>
+                    </div>
+                  </> : ""
+                }
+              </div>
               <SongList loading={loading} songs={songs} />
             </Grid>
             <Grid item xs={12} md={4}>
@@ -315,6 +339,14 @@ const Result = (props) => {
                 }} />
             </Grid>
             <Grid item xs={12} md={4}>
+              <div className="track-header">
+                {songs.length && <><div className="float-left">
+                  <Typography variant="h4" color="secondary">Tracklist</Typography>
+                </div>
+                  <div className="float-right">
+                    <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
+                  </div></>}
+              </div>
               <SongList loading={loading} songs={songs} />
             </Grid>
           </Grid>

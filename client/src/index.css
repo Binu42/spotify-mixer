@@ -23,16 +23,48 @@ body {
   filter: opacity(0.5);
 }
 
+.track-header {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: relative;
+}
+
 .active {
   background-color: #e4e4e421;
 }
 
 .pointer {
   cursor: pointer;
+  transition: all 0.3s ease-in;
 }
 
 .pointer:hover {
   background-color: #e4e4e409;
+}
+
+.pointer .track-avatar {
+  transition: 0.3s ease-in-out;
+}
+
+.pointer:hover .track-avatar {
+  transform: scale(1.1);
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.text-light {
+  color: #c1b4bc;
 }
 
 .MuiTypography-colorTextSecondary {
