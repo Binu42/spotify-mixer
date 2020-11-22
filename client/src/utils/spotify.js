@@ -47,6 +47,15 @@ const getRecommendations = async (accessToken, parameters, seeds, limit) => {
     }
     params.limit = limit;
     response = await spotify.getRecommendations(params);
+    const { tracks } = response.body;
+    const trackIds = tracks && tracks.map(song => song.id);
+    try {
+      const audioFeature = await spotify.getAudioFeaturesForTracks(trackIds);
+      for (let i = 0; i < response.body.tracks.length; i++)
+        response.body.tracks[i].features = audioFeature.body.audio_features[i];
+    } catch (error) {
+      console.log(error)
+    }
   } else {
     response = await axios.post(`${URI}/recommendations`, {
       parameters,

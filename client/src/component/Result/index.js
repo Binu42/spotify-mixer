@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Container, Grid, Hidden, ListItemText, Typography } from '@material-ui/core'
+import { Box, Button, ButtonGroup, Container, Grid, Hidden, ListItemText, Typography, ListItemAvatar } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab';
 import React, { useEffect, useRef, useState } from 'react'
 import SearchSeeds from '../Common/SearchSeeds'
@@ -287,8 +287,10 @@ const Result = (props) => {
           {loading ? <>
             {
               [0, 1, 2].map((item, index) => (
-                <div className="seed-item" key={index}>
-                  <Skeleton variant="rect" style={{ background: 'rgba(245, 241, 218, 0.473)', borderRadius: 5 }} width={48} height={52} />
+                <div className="seed-item" style={{ padding: 2 }} key={index}>
+                  <ListItemAvatar>
+                    <Skeleton variant="rect" style={{ background: 'rgba(245, 241, 218, 0.473)', borderRadius: 5 }} width={50} height={48} />
+                  </ListItemAvatar>
                   <ListItemText primary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} secondary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} />
                 </div>
               ))

@@ -150,6 +150,14 @@ router.post('/recommendations', async (req, res) => {
 
     const spotify = await user.createAPI();
     const results = await spotify.getRecommendations(parameters);
+    const trackIds = results && results.body.tracks.map(song => song.id);
+    try {
+      const response = await spotify.getAudioFeaturesForTracks(trackIds);
+      for (let i = 0; i < results.body.tracks.length; i++)
+        results.body.tracks[i].features = response.body.audio_features[i];
+    } catch (error) {
+      console.log(error)
+    }
     res.json({ body: results.body });
   } catch (e) {
     console.log(e);
