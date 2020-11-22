@@ -27,6 +27,14 @@ body {
   background-color: #e4e4e421;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  background-color: #e4e4e409;
+}
+
 .MuiTypography-colorTextSecondary {
   color: #c1b4bc !important;
 }

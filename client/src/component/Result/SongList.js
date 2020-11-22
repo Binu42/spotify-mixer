@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@material-ui/lab'
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core'
+import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Tooltip, Zoom } from '@material-ui/core'
 import ReactJkMusicPlayer from 'react-jinke-music-player'
 import 'react-jinke-music-player/assets/index.css'
 
 const SongList = ({ loading, songs }) => {
   const [sounds, setSounds] = useState([]);
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState();
+  const [playIndex, setPlayIndex] = useState(0);
+  const [index, setIndex] = useState([]);
 
   useEffect(() => {
     if (sounds.length)
       setSounds([]);
     for (let i = 0; i < songs.length; i++) {
       const { id, preview_url, name, album: { images }, artists } = songs[i];
-      if (preview_url)
+      if (preview_url) {
+        setIndex(prev => [...prev, id]);
         setSounds(prev => [...prev, {
           id,
           name,
@@ -21,7 +24,8 @@ const SongList = ({ loading, songs }) => {
           cover: images[0]?.url,
           singer: artists?.map((artist) => artist.name),
           duration: 30,
-        }])
+        }]);
+      }
     }
   }, [songs])
 
@@ -37,15 +41,17 @@ const SongList = ({ loading, songs }) => {
 
           return (
             <div key={id}>
-              <ListItem className={currentlyPlayingId === id ? "active" : ''}>
-                <ListItemAvatar>
-                  <Avatar variant="square" alt={name} src={images[0]?.url} style={{ width: 50, height: 50, borderRadius: 5, marginRight: 10 }} />
-                </ListItemAvatar>
-                <ListItemText className="text-white" primary={name} secondary={artists?.map((artist, i) => i === artists.length - 1 ? `${artist.name}` : `${artist.name}, `)} />
-                <ListItemSecondaryAction className="text-white">
-                  {`${min} : ${sec}`}
-                </ListItemSecondaryAction>
-              </ListItem>
+              <Tooltip title={preview_url !== null ? "click to play" : "preview of this song not available"} placement="top" TransitionComponent={Zoom} >
+                <ListItem onClick={e => setPlayIndex(index.findIndex(el => el === id))} className={(currentlyPlayingId === id ? "active" : '') + (preview_url !== null ? ' pointer' : '')}>
+                  <ListItemAvatar>
+                    <Avatar variant="square" alt={name} src={images[0]?.url} style={{ width: 50, height: 50, borderRadius: 5, marginRight: 10 }} />
+                  </ListItemAvatar>
+                  <ListItemText className="text-white" primary={name} secondary={artists?.map((artist, i) => i === artists.length - 1 ? `${artist.name}` : `${artist.name}, `)} />
+                  <ListItemSecondaryAction className="text-white">
+                    {`${min} : ${sec}`}
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </Tooltip>
               <Divider />
             </div>
           )
@@ -56,10 +62,16 @@ const SongList = ({ loading, songs }) => {
         audioLists={sounds}
         theme="dark"
         onAudioPlay={({ id }) => setCurrentlyPlayingId(id)}
+        onPlayIndexChange={(index) => setPlayIndex(index)}
         showDownload={false}
+        glassBg={true}
+        mode="full"
         showReload={false}
+        playIndex={playIndex}
         defaultPosition={{ bottom: 10, right: 10 }}
         showThemeSwitch={false}
+        toggleMode={false}
+        responsive={false}
         remove={false}
       />
     </List>
