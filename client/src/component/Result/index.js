@@ -1,4 +1,5 @@
-import { Box, Button, ButtonGroup, Container, Grid, Hidden, Typography } from '@material-ui/core'
+import { Box, Button, ButtonGroup, Container, Grid, Hidden, ListItemText, Typography } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab';
 import React, { useEffect, useRef, useState } from 'react'
 import SearchSeeds from '../Common/SearchSeeds'
 import SaveOnSpotify from './SaveOnSpotify'
@@ -9,6 +10,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { authenticate, getRecommendations, getArtists, getTracks } from '../../utils/spotify.js';
 import SongList from './SongList'
 import { FaSortAmountDownAlt, FaSortAmountUp } from 'react-icons/fa'
+import SeedItem from './SeedItem'
 
 const transport = axios.create({
   withCredentials: true,
@@ -26,8 +28,7 @@ const checkStateStored = () => {
     localStorage.getItem('acousticness') &&
     localStorage.getItem('valence') &&
     localStorage.getItem('tempo') &&
-    localStorage.getItem('seeds') &&
-    localStorage.getItem('seedColors')
+    localStorage.getItem('seeds')
   );
 };
 
@@ -49,7 +50,6 @@ const Result = (props) => {
   const [valence, setValence] = useState({ min: 0, max: 1 });
   const [tempo, setTempo] = useState({ min: 50, max: 200 });
   const [seeds, setSeeds] = useState();
-  const [seedColors, setSeedColors] = useState({});
   const [sortBy, setSortBy] = useState("");
   const [sort, setSort] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
@@ -67,7 +67,6 @@ const Result = (props) => {
     localStorage.setItem('valence', JSON.stringify(valence));
     localStorage.setItem('tempo', JSON.stringify(tempo));
     localStorage.setItem('seeds', JSON.stringify(seeds));
-    localStorage.setItem('seedColors', JSON.stringify(seedColors));
 
     const URI = process.env.REACT_APP_API_URL;
     window.location = `${URI}/login?redirectTo=results`;
@@ -85,8 +84,7 @@ const Result = (props) => {
       JSON.stringify(acousticness) === localStorage.getItem('acousticness') &&
       JSON.stringify(valence) === localStorage.getItem('valence') &&
       JSON.stringify(tempo) === localStorage.getItem('tempo') &&
-      JSON.stringify(seeds) === localStorage.getItem('seeds') &&
-      JSON.stringify(seedColors) === localStorage.getItem('seedColors')
+      JSON.stringify(seeds) === localStorage.getItem('seeds')
     );
   };
 
@@ -105,7 +103,6 @@ const Result = (props) => {
     setValence(JSON.parse(localStorage.getItem('valence')));
     setTempo(JSON.parse(localStorage.getItem('tempo')));
     setSeeds(JSON.parse(localStorage.getItem('seeds')));
-    setSeedColors(JSON.parse(localStorage.getItem('seedColors')));
 
     setLoading(false);
   };
@@ -243,13 +240,13 @@ const Result = (props) => {
       );
   };
 
-  const removeSeed = (item, type) => {
+  const removeSeed = (id, type) => {
     if (seeds.artists.length + seeds.tracks.length <= 1) {
       // message.error('Cannot remove all seeds');
     } else {
       setSeeds({
-        artists: type === 'artist' ? seeds.artists.filter((artist) => artist.id !== item.id) : seeds.artists,
-        tracks: type === 'track' ? seeds.tracks.filter((track) => track.id !== item.id) : seeds.tracks,
+        artists: type === 'Artists' ? seeds.artists.filter((artist) => artist.id !== id) : seeds.artists,
+        tracks: type === 'Tracks' ? seeds.tracks.filter((track) => track.id !== id) : seeds.tracks,
       });
     }
   };
@@ -258,10 +255,11 @@ const Result = (props) => {
     if (seeds?.artists.length + seeds?.tracks.length >= 5) {
       // message.error('Cannot add more than five seeds');
     } else {
-      setSeeds({
-        artists: item.type === 'Artists' ? [...seeds?.artists, item] : seeds.artists,
-        tracks: item.type === 'Tracks' ? [...seeds?.tracks, item] : seeds.tracks,
-      });
+      if (item)
+        setSeeds({
+          artists: item.type === 'Artists' ? [...seeds?.artists, item] : seeds.artists,
+          tracks: item.type === 'Tracks' ? [...seeds?.tracks, item] : seeds.tracks,
+        });
     }
   };
 
@@ -271,19 +269,39 @@ const Result = (props) => {
     if (songs) {
       if (sort)
         songs.sort((a, b) => {
-          return a.features[by] - b.features[by];
+          if (a.features)
+            return a.features[by] - b.features[by];
         })
       else
         songs.sort((a, b) => {
-          return b.features[by] - a.features[by];
+          if (a.features)
+            return b.features[by] - a.features[by];
         })
     }
   }
   return (
     <Container>
       <SearchSeeds isResult={true} addSeed={addSeed} />
-      <Box py={2}>
-
+      <Box p={1}>
+        <span className="seeds">
+          {loading ? <>
+            {
+              [0, 1, 2].map((item, index) => (
+                <div className="seed-item" key={index}>
+                  <Skeleton variant="rect" style={{ background: 'rgba(245, 241, 218, 0.473)', borderRadius: 5 }} width={48} height={52} />
+                  <ListItemText primary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} secondary={<Skeleton style={{ background: 'rgba(245, 241, 218, 0.473)' }} />} />
+                </div>
+              ))
+            }
+          </> : <>
+              {
+                seeds && seeds.artists && seeds.artists.map(artist => <SeedItem key={artist.id} seed={artist} removeSeed={removeSeed} />)
+              }
+              {
+                seeds && seeds.tracks && seeds.tracks.map(track => <SeedItem key={track.id} seed={track} removeSeed={removeSeed} />)
+              }
+            </>}
+        </span>
       </Box>
       <Box py={2}>
         <Hidden smDown>
@@ -368,12 +386,12 @@ const Result = (props) => {
             </Grid>
             <Grid item xs={12} md={4}>
               <div className="track-header">
-                {songs.length && <><div>
+                {songs.length ? <><div>
                   <Typography variant="h4" color="secondary">Tracklist</Typography>
                 </div>
                   <div>
                     <Typography variant="subtitle2" className="text-light">{songs.length} tracks</Typography>
-                  </div></>}
+                  </div></> : ""}
               </div>
               <div className="sort-track">
                 {

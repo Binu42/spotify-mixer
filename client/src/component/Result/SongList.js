@@ -11,8 +11,11 @@ const SongList = ({ loading, songs }) => {
   const [index, setIndex] = useState([]);
 
   useEffect(() => {
-    if (sounds.length)
+    if (sounds.length) {
       setSounds([]);
+      setIndex([]);
+      setPlayIndex(0);
+    }
     for (let i = 0; i < songs.length; i++) {
       const { id, preview_url, name, album: { images }, artists } = songs[i];
       if (preview_url) {
@@ -73,7 +76,7 @@ const SongList = ({ loading, songs }) => {
         glassBg={true}
         mode="full"
         showReload={false}
-        playIndex={playIndex}
+        playIndex={playIndex !== -1 ? playIndex : 0}
         defaultPosition={{ bottom: 10, right: 10 }}
         showThemeSwitch={false}
         toggleMode={false}
