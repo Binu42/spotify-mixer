@@ -79,7 +79,7 @@ const TrackListSettings = ({ values, handlers }) => {
               <MdExpandMore />
             </IconButton>
           }
-          title="Show Tracklist Settings"
+          title={(expanded ? "Hide" : "Show") + " Tracklist Settings"}
         />
       </Hidden>
       <Hidden smDown implementation='css'>

@@ -13,7 +13,7 @@ const authenticate = (accessToken) => {
 
 const search = async (accessToken, searchTerm) => {
   let types = ['track', 'artist', 'playlist'];
-  let limit = 3;
+  let limit = 4;
   let response;
 
   if (accessToken) {

@@ -40,7 +40,7 @@ const Result = (props) => {
   const [error, setError] = useState(false);
   const initialFetchComplete = useRef(false);
   // Parameters
-  const [count, setCount] = useState(10);
+  const [count, setCount] = useState(25);
   const [popularity, setPopularity] = useState({ min: 0, max: 100 });
   const [danceability, setDanceability] = useState({ min: 0, max: 1 });
   const [energy, setEnergy] = useState({ min: 0, max: 1 });

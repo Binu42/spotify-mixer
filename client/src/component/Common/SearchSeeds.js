@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme, isResult) => ({
   root: {
     padding: '2px 4px',
     display: 'flex',
+    borderRadius: 5,
     alignItems: 'center',
     background: 'rgba(0, 0, 0, 0.21)',
     width: 600,
@@ -50,6 +51,10 @@ const useStyles = makeStyles((theme, isResult) => ({
       left: "10%",
       zIndex: - 1,
     }
+  },
+  autoCompleteBg: {
+    background: '#373333',
+    color: '#fff'
   }
 }));
 
@@ -61,11 +66,8 @@ const SearchSeeds = (props) => {
   const [playlists, setPlaylists] = useState([]);
   const [seed, setSeed] = useState(null);
   const [playlistSeed, setPlaylistSeed] = useState(null);
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleSwitchChange = () => {
-    setIsChecked(prev => !prev);
-  }
+  const [inputValue, setInputValue] = useState("");
+  const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
 
   const searchSpotify = async (searchTerm) => {
     if (searchTerm && searchTerm.length > 0) {
@@ -85,13 +87,14 @@ const SearchSeeds = (props) => {
     if (props && props.addSeed) {
       props.addSeed(option);
     } else {
-      if (option.type === 'Playlist') {
-        setPlaylistSeed(option);
-      } else if (option.type === 'Tracks') {
-        setSeed({ artists: [], tracks: [option] });
-      } else {
-        setSeed({ artists: [option], tracks: [] });
-      }
+      if (option)
+        if (option.type === 'Playlist') {
+          setPlaylistSeed(option);
+        } else if (option.type === 'Tracks') {
+          setSeed({ artists: [], tracks: [option] });
+        } else {
+          setSeed({ artists: [option], tracks: [] });
+        }
     }
   };
 
@@ -148,39 +151,26 @@ const SearchSeeds = (props) => {
       onChange={(event, value) => addSeed(value)}
       includeInputInList
       filterSelectedOptions
+      onClose={() => setIsAutoCompleteOpen(false)}
+      value={inputValue}
+      onOpen={() => setIsAutoCompleteOpen(true)}
+      classes={{ groupLabel: classes.autoCompleteBg, paper: classes.autoCompleteBg, noOptions: classes.autoCompleteBg }}
+      open={options && options.length && isAutoCompleteOpen ? true : false}
       onInputChange={(event, newInputValue) => {
         searchSpotify(newInputValue);
+        setInputValue(newInputValue);
       }}
       renderInput={(params) => (
         <div ref={params.InputProps.ref} component="form" style={{ width: props.isResult && '100%' }} className={classes.root}>
-          {props.isResult ? <Hidden smDown>
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-              <MdSearch className={classes.icon} />
-            </IconButton>
-          </Hidden> :
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-              <MdSearch className={classes.icon} />
-            </IconButton>
-          }
+          <IconButton type="submit" className={classes.iconButton} aria-label="search">
+            <MdSearch className={classes.icon} />
+          </IconButton>
           <InputBase
             {...params.inputProps}
             className={classes.input}
-            placeholder={props.isResult ? `Search by ${isChecked ? 'Artist' : 'Track'}` : "Type in any song, playlists or artists"}
+            placeholder={props.isResult ? "Type in any songs or artists" : "Type in any song, playlists or artists"}
             inputProps={{ 'aria-label': 'type in any song, playlists or artists' }}
           />
-          {props.isResult && <>
-            <Divider orientation="vertical" />
-            <Typography component="div" color="secondary">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Artist</Grid>
-                <Grid item>
-                  <Switch size="small" checked={isChecked} onChange={handleSwitchChange} color="primary" name="artistSwitch" />
-                </Grid>
-                <Grid item>Track</Grid> |
-                <Button onClick={e => setIsChecked(false)} style={{ textTransform: "capitalize" }} color="secondary">Reset</Button>
-              </Grid>
-            </Typography>
-          </>}
         </div>
       )}
       renderOption={(option) => {
