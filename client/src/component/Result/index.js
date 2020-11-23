@@ -1,5 +1,5 @@
-import { Box, Button, ButtonGroup, Container, Grid, Hidden, ListItemText, Typography, ListItemAvatar } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab';
+import { Box, Button, ButtonGroup, Container, Grid, Hidden, ListItemText, Typography, ListItemAvatar, Snackbar } from '@material-ui/core'
+import { Alert, Skeleton } from '@material-ui/lab';
 import React, { useEffect, useRef, useState } from 'react'
 import SearchSeeds from '../Common/SearchSeeds'
 import SaveOnSpotify from './SaveOnSpotify'
@@ -54,6 +54,7 @@ const Result = (props) => {
   const [sort, setSort] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [alert, setAlert] = useState({});
 
   const saveStateAndLogin = () => {
     localStorage.setItem('songs', JSON.stringify(songs));
@@ -242,7 +243,7 @@ const Result = (props) => {
 
   const removeSeed = (id, type) => {
     if (seeds.artists.length + seeds.tracks.length <= 1) {
-      // message.error('Cannot remove all seeds');
+      setAlert({ message: "Cannot remove last seed", type: "error" })
     } else {
       setSeeds({
         artists: type === 'Artists' ? seeds.artists.filter((artist) => artist.id !== id) : seeds.artists,
@@ -253,7 +254,7 @@ const Result = (props) => {
 
   const addSeed = (item) => {
     if (seeds?.artists.length + seeds?.tracks.length >= 5) {
-      // message.error('Cannot add more than five seeds');
+      setAlert({ message: "not able to add more than five seeds", type: "error" })
     } else {
       if (item)
         setSeeds({
@@ -279,6 +280,11 @@ const Result = (props) => {
         })
     }
   }
+
+  const handleSnackbarClose = () => {
+    setAlert({});
+  }
+
   return (
     <Container>
       <SearchSeeds isResult={true} addSeed={addSeed} />
@@ -286,7 +292,7 @@ const Result = (props) => {
         <span className="seeds">
           {loading ? <>
             {
-              [0, 1, 2].map((item, index) => (
+              [0, 1, 2, 3, 4].map((item, index) => (
                 <div className="seed-item" style={{ padding: 2 }} key={index}>
                   <ListItemAvatar>
                     <Skeleton variant="rect" style={{ background: 'rgba(245, 241, 218, 0.473)', borderRadius: 5 }} width={50} height={48} />
@@ -419,6 +425,11 @@ const Result = (props) => {
           </Grid>
         </Hidden>
       </Box>
+      <Snackbar open={alert.message} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert variant="filled" severity={alert.type}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }
