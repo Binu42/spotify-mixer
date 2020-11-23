@@ -74,6 +74,7 @@ const SongList = ({ loading, songs }) => {
         onPlayIndexChange={(index) => setPlayIndex(index)}
         showDownload={false}
         glassBg={true}
+        autoPlay={false}
         mode="full"
         showReload={false}
         playIndex={playIndex !== -1 ? playIndex : 0}
