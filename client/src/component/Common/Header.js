@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    padding: '2rem',
+    padding: '1rem 2rem',
     [theme.breakpoints.down('sm')]: {
       padding: '1rem 0.8rem',
     }
